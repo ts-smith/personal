@@ -1,0 +1,11 @@
+<h1> Assignments
+$if null assignments
+   $# Show a standard message
+   <p> There are no assignments posted
+$else
+   <ul>
+      $forall Entity assignmentId assignment <- assignments
+         <li>
+            <a href=@{AssignmentR assignmentId} > #{assignmentTitle assignment}
+            <a href=@{EditR assignmentId}>
+               <small>Edit

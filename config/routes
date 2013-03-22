@@ -1,0 +1,15 @@
+/static StaticR Static getStatic
+/auth   AuthR   Auth   getAuth
+
+/favicon.ico FaviconR GET
+/robots.txt RobotsR GET
+
+/ HomeR GET
+/assignmentList AssignmentListR GET 
+/assignment/#AssignmentId AssignmentR GET
+/admin/post PostR GET POST
+/admin/edit/#AssignmentId EditR GET POST
+/admin/file/ NewFileR GET POST
+
+/file/#FileId/#Text FileR GET
+/files FilesR GET

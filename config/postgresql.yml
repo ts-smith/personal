@@ -1,0 +1,24 @@
+Default: &defaults
+  user: trevorsmith
+  password: trevorsmith
+  host: localhost
+  port: 5432
+  database: trevorsmith
+  poolsize: 10
+
+Development:
+  <<: *defaults
+
+Testing:
+  database: trevorsmith_test
+  <<: *defaults
+
+Staging:
+  database: trevorsmith_staging
+  poolsize: 100
+  <<: *defaults
+
+Production:
+  database: trevorsmith_production
+  poolsize: 100
+  <<: *defaults
