@@ -19,6 +19,9 @@ Staging:
   <<: *defaults
 
 Production:
-  database: trevorsmith_production
+  user: medcpitgeuzwdg
+  database: d3luagip7vb2nd
+  host: ec2-54-243-190-226.compute-1.amazonaws.com
+  database: d3luagip7vb2nd
   poolsize: 100
   <<: *defaults
