@@ -1,0 +1,9 @@
+.hiddenFile
+   display: none;
+
+.rightField, .leftField
+   vertical-align: top;
+   display: inline-block;
+
+.errors
+   color: red;

@@ -1,3 +1,9 @@
-<h1> #{assignmentTitle assignment}
-<a href=@{EditR assignmentId}> Edit
+$if showAttachments
+   <div>Attachments
+   $forall (fid, n) <- fileHeaders
+      <a class=fileButton href=@{FileR fid n}>
+         <div>#{n}
+<h1>#{assignmentTitle assignment}
+$if authed
+   <a href=@{EditR assignmentId}> Edit
 <article> #{assignmentContent assignment}

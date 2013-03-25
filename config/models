@@ -9,12 +9,19 @@ Email
     UniqueEmail email
 Assignment
     title Text
+    posted Day
     content Html
     deriving
 File
+   assignmentId AssignmentId Maybe
    fName Text
+   fposted Day
    fContentType Text
-   fContent ByteString
+   contentId FilecontentId
    deriving
+
+
+Filecontent
+   content ByteString
 
  -- By default this file is used in Model.hs (which is imported by Foundation.hs)

@@ -5,11 +5,14 @@
 /robots.txt RobotsR GET
 
 / HomeR GET
-/assignmentList AssignmentListR GET 
+/list AssignmentListR GET 
 /assignment/#AssignmentId AssignmentR GET
+
+/admin AdminR GET POST
 /admin/post PostR GET POST
 /admin/edit/#AssignmentId EditR GET POST
 /admin/file/ NewFileR GET POST
+/admin/signout SignoutR GET
 
 /file/#FileId/#Text FileR GET
 /files FilesR GET

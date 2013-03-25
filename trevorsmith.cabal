@@ -71,6 +71,7 @@ library
                  , conduit                       >= 1.0
                  , monad-logger                  >= 0.3
                  , fast-logger                   >= 0.3
+                 , time                          >= 1.4
 
 executable         trevorsmith
     if flag(library-only)

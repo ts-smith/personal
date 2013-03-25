@@ -6,6 +6,8 @@ $else
    <ul>
       $forall Entity assignmentId assignment <- assignments
          <li>
+            <label>#{toString $ assignmentPosted assignment}
             <a href=@{AssignmentR assignmentId} > #{assignmentTitle assignment}
-            <a href=@{EditR assignmentId}>
-               <small>Edit
+            $if authed
+               <a href=@{EditR assignmentId}>
+                  <small>Edit

@@ -10,76 +10,136 @@ module Handler.Home where
 import Import
 --import Yesod.Form.MassInput
 import qualified Data.ByteString as BS
-import qualified Data.ByteString.Lazy as BSL
 import qualified Data.Text as T
 import Data.Conduit
-import qualified Data.Conduit.Binary as CB
 import qualified Data.Conduit.List as CL
+import Data.Maybe
+import Database.Persist.GenericSql
+import Data.Time
+import Data.Time.Calendar
+import Data.Time.Calendar.WeekDate
 
 import Yesod.Form.Nic (YesodNic, nicHtmlField)
 instance YesodNic App
 
 getHomeR :: Handler RepHtml
 getHomeR = do
+   authed <- auth
    defaultLayout $ do
       $(widgetFile "home")
 
 getAssignmentListR :: Handler RepHtml
 getAssignmentListR = do
-   assignments <- runDB $ selectList [] [Desc AssignmentTitle]
+   authed <- auth
+   assignments <- runDB $ selectList [] [Desc AssignmentPosted]
    defaultLayout $ do
       $(widgetFile "assignments")
 
 getPostR :: Handler RepHtml
 getPostR = do
-   (assignmentsWidget, enctype) <- generateFormPost entryForm
-   defaultLayout $ do
-      $(widgetFile "postAssignment")
-   
+   authed <- auth
+   if authed
+    then do
+      (assignmentWidget, enctype) <- generateFormPost mEntryForm
+      defaultLayout $ do
+         $(widgetFile "postAssignment")
+    else do setMessage donthack
+            redirect HomeR
 postPostR :: Handler RepHtml
 postPostR = do
-   ((res, assignmentWidget), enctype) <- runFormPost entryForm
-   case res of
-      FormSuccess validatingAssignment -> do
-         let assignment = getAssignment validatingAssignment
-         assignmentId <- runDB $ insert assignment
-         setMessage $ toHtml $ (assignmentTitle assignment) <> " created"
-         redirect $ AssignmentR assignmentId
-      _ -> defaultLayout $ do
-         setTitle "Please correct your entry form"
-         $(widgetFile "assignmentAddError")
+   authed <- auth
+   if authed
+    then do 
+      ((res, assignmentWidget), enctype) <- runFormPost mEntryForm
+      case res of
+         FormSuccess validatingAssignment -> do
+            day <- liftIO getDay
+            let (assignment, files) = getAssignmentWithFiles validatingAssignment day
+            assignmentId <- runDB $ insert assignment
+            let extract = map extractFileInfo files
+
+            fileContents <- mapM (liftIO . runResourceT . ($$ (CL.fold (BS.append) BS.empty))) $ map (\(_,_,fc)-> fc) extract
+         
+            let contentModels = map Filecontent fileContents
+            contentIds <- mapM (runDB . insert) contentModels
+   
+            day <- liftIO $ getDay
+   
+            let fileHeaders = zip extract contentIds
+                dbFileHeaders = map (\((fn,ft,_), fid) -> File (Just assignmentId) fn day ft fid) fileHeaders
+
+            mapM_ (runDB . insert) dbFileHeaders
+            --fid <- runDB $ insert newFile
+
+            setMessage $ toHtml $ (assignmentTitle assignment) <> " created"
+            redirect $ AssignmentR assignmentId
+         _ -> do setMessage $ toHtml ("Input Errors" :: Text)
+                 defaultLayout $ do
+                    setTitle "Please correct your entry form"
+                    toWidget [lucius| #message h2 { color: red; }|]
+                    $(widgetFile "postAssignment")
+    else do
+      setMessage donthack
+      redirect HomeR
 
 
 getEditR :: AssignmentId -> Handler RepHtml
 getEditR theId = do
-   assignment <- runDB $ get404 theId
-   (editWidget, enctype) <- generateFormPost $ editForm assignment
-   defaultLayout $ do
-      setTitle $ toHtml $ assignmentTitle assignment
-      $(widgetFile "editAssignment")
+   authed <- auth
+   if authed
+    then do
+      assignment <- runDB $ get404 theId
+      (editWidget, enctype) <- generateFormPost $ editForm assignment
+      defaultLayout $ do
+         setTitle $ toHtml $ assignmentTitle assignment
+         $(widgetFile "editAssignment")
+    else do
+      setMessage donthack
+      redirect HomeR
 
 postEditR :: AssignmentId -> Handler RepHtml
 postEditR theId = do
-   ((res, assignmentWidget), enctype) <- runFormPost $ entryForm 
-   case res of
-      FormSuccess validatingAssignment -> do
-         let assignment = getAssignment validatingAssignment
-         runDB $ replace theId assignment
-         setMessage $ toHtml ("*Edited" :: Text)
-         redirect $ AssignmentR theId
-      _ -> defaultLayout $ do
-         setTitle "Please correct your entry form"
-         $(widgetFile "assignmentAddError")
-   
+   authed <- auth
+   if authed 
+    then do
+      ((res, editWidget), enctype) <- runFormPost $ entryForm 
+      case res of
+         FormSuccess validatingAssignment -> do
+            day <- liftIO getDay
+            let assignment = getAssignment validatingAssignment day
+            runDB $ replace theId assignment
+            setMessage $ toHtml ("*Edited" :: Text)
+            redirect $ AssignmentR theId
+         _ -> do setMessage $ toHtml ("Input Errors" :: Text)
+                 defaultLayout $ do
+                    setTitle "Please correct your entry form"
+                    toWidget [lucius| #message h2 { color: red; }|]
+                    $(widgetFile "editAssignment")
+    else do
+      setMessage donthack
+      redirect HomeR
+                  
+
 getAssignmentR :: AssignmentId -> Handler RepHtml
 getAssignmentR assignmentId = do
-   assignment <- runDB $ get404 assignmentId
+   authed <- auth
+   --assignment <- runDB $ get404 assignmentId
+   let sql = "SELECT ??, ?? FROM assignment LEFT OUTER JOIN file ON (assignment.id = file.assignment_id) WHERE assignment.id = ? LIMIT 3"
+       getAssignments :: Handler [(Entity Assignment, Maybe (Entity File))]
+       getAssignments = runDB $ rawSql sql [toPersistValue assignmentId]
+   queryResult <- getAssignments
+   let assignment = entityVal $ fst $  queryResult !! 0
+       fileHeaders = map (\ (_, (Just (Entity fid (File _ n _ _ _)))) -> (fid, n) ) $ filter (\ (_, x) -> isJust x) queryResult
+       showAttachments = (length fileHeaders) > 0
    defaultLayout $ do
       setTitle $ toHtml $ assignmentTitle assignment
       $(widgetFile "assignment")
 
+
 getNewFileR :: Handler RepHtml
 getNewFileR = do
+   redirect HomeR
+   {-
    (formWidget, formEnctype) <- generateFormPost fileUploadForm
    defaultLayout $ do
       setTitle "Upload new file."
@@ -87,26 +147,38 @@ getNewFileR = do
       <form method=post enctype=#{formEnctype}>
          ^{formWidget}
          <input type=submit>|]
+         -}
  
 postNewFileR :: Handler RepHtml
 postNewFileR = do
+   authed <- auth
+   redirect HomeR
+   {-
    ((result, formWidget), formEnctype) <- runFormPost fileUploadForm
    case result of
       FormSuccess (fileInfo, _) -> do
          let (fname, ftype, fcontent) = extractFileInfo fileInfo
          bc <- liftIO $ runResourceT $ fcontent $$ (CL.fold (BS.append) BS.empty)
-         let newFile = File fname ftype bc
+         contentId <- runDB $ insert $ Filecontent bc
+         day <- liftIO $ getDay
+         let newFile = File Nothing fname day ftype contentId
          fid <- runDB $ insert newFile
          defaultLayout $ do [whamlet|file Posted
          <p>#{show bc}|]
       _ -> redirect HomeR
+   -}
 
-getFileR :: FileId -> Text -> Handler RepHtml
+
+getFileR :: FileId -> Text -> Handler RepPlain
 getFileR fid filename = do
-   (File n t c) <- runDB $ get404 fid
+   --(File _ n t cid) <- runDB $ get404 fid
+   let sql = "SELECT ??, ?? FROM file LEFT OUTER JOIN filecontent ON (file.content_id = filecontent.id) WHERE file.id = ? LIMIT 1"
+       getFiles :: Handler [(Entity File, Entity Filecontent)]
+       getFiles = runDB $ rawSql sql [toPersistValue fid]
+   [((Entity _ (File _ n _ t _)), (Entity _ (Filecontent bc)))] <- getFiles
    let bs = (read $ show t :: BS.ByteString)
    setHeader "Content-Disposition" ("attachment; filename=" `T.append` n)
-   sendResponse (bs, toContent c)
+   sendResponse (bs, toContent bc)
 
    {-defaultLayout $ do [whamlet|
    <p>#{n}
@@ -114,53 +186,177 @@ getFileR fid filename = do
      |]-}
 getFilesR :: Handler RepHtml
 getFilesR = do
-   files <- runDB $ selectList [] [Desc FileFName]
+   authed <- auth
+   files <- runDB $ selectList [] [Desc FileFposted]
    defaultLayout $ do [whamlet|
-   $forall (Entity fid (File n _ _)) <- files
-      <p>
-         <a href=@{FileR fid n}>#{n}|]
+   <ul>
+      $forall (Entity fid (File _ n _ _ _)) <- files
+         <a class=fileButton href=@{FileR fid n}>
+            <li>
+               <div>#{n} |]
+                      toWidget [lucius| .fileButton div { margin-top: 5px; } |]
 
+getAdminR :: Handler RepHtml
+getAdminR = do
+   authed <- auth
+   if authed
+      then do
+         defaultLayout $ do [whamlet|
+<p>
+   <a href=@{PostR}>Post
+<p>
+   <a href=@{SignoutR}>Signout|]
+      else do
+         (authWidget, enctype) <- generateFormPost adminForm
+         defaultLayout $ do 
+            $(widgetFile "signin")
+
+postAdminR :: Handler RepHtml
+postAdminR = do 
+   ((result, authWidget), enctype) <- runFormPost adminForm
+   case result of
+      FormSuccess _ -> do
+         setSession "authed" "absolutelyAuthed"
+         redirect AdminR
+      _ -> do
+         setMessage $ toHtml ("Wrong!" :: Text)
+         defaultLayout $ do
+            setTitle "Please correct your entry form"
+            toWidget [lucius| #message h2 { color: red; }|]
+            $(widgetFile "signin")
+
+getSignoutR :: Handler RepHtml
+getSignoutR = do
+   setSession "authed" "not"
+   redirect HomeR
 
 -------- Form -------
 
 data ValidatedAssignment = ValidatedAssignment { getTitle :: Text
                                                , getContent :: Html
-                                               , getPassword :: Text
                                                } 
+data VassFiles = VassFiles { getMTitle :: Text
+                           , getMContent :: Html
+                           , getFile1 :: Maybe FileInfo
+                           , getFile2 :: Maybe FileInfo
+                           , getFile3 :: Maybe FileInfo
+                           }
+
+mEntryForm :: Html -> MForm App App (FormResult VassFiles, Widget)
+mEntryForm extra = do
+   (titleRes, titleView) <- mreq textField "Title" Nothing
+   (contentRes, contentView) <- mreq nicHtmlField "Content" Nothing
+   (file1Res, fileAView) <- mopt fileField "Attach a file" Nothing
+   (file2Res, fileBView) <- mopt fileField "Attach another file" Nothing
+   (file3Res, fileCView) <- mopt fileField "Attach another file" Nothing
+   let vassRes = VassFiles <$> titleRes 
+                           <*> contentRes
+                           <*> file1Res
+                           <*> file2Res
+                           <*> file3Res
+   let widget = do [whamlet|#{extra}
+<div id=formContainer>
+   <div class=leftField>
+      <div class=required>
+         <label for=#{fvId titleView}>Title
+         ^{fvInput titleView}
+      <div class=required>
+         <label for=#{fvId contentView}>Content
+         ^{fvInput contentView}
+   <div class=rightField>
+      <div id=form1 class="optional showPost">
+         <label for=#{fvId fileAView}>Attach File
+         ^{fvInput fileAView}
+      <div id=form2 class="optional dontshowPost">
+         ^{fvInput fileBView}
+      <div id=form3 class="optional dontshowPost">
+         ^{fvInput fileCView}
+|]
+   return (vassRes, widget)
 
 entryForm :: Form ValidatedAssignment
 entryForm = renderDivs $ ValidatedAssignment
    <$> areq textField "Title" Nothing
    <*> areq nicHtmlField "Content" Nothing
-   <*> areq validPasswordField "Password" Nothing
 
 editForm :: Assignment -> Form ValidatedAssignment
-editForm (Assignment title content) = renderDivs $ ValidatedAssignment
+editForm (Assignment title _ content) = renderDivs $ ValidatedAssignment
    <$> areq textField "Title" (Just title)
    <*> areq nicHtmlField "Content" (Just content)
-   <*> areq validPasswordField "Password" Nothing
 
-fileUploadForm :: Form (FileInfo, Text)
-fileUploadForm = renderDivs $ (,)
-   <$> fileAFormReq "Choose a File"
-   <*> areq validPasswordField "Password" Nothing
+fileUploadForm :: Form FileInfo
+fileUploadForm = renderDivs $ fileAFormReq "Choose a File"
 
+validPasswordField :: (RenderMessage master FormMessage) => Field sub master Text
 validPasswordField = checkBool (== "password") ("Bad password" :: Text) passwordField
 
-getAssignment :: ValidatedAssignment -> Assignment
-getAssignment (ValidatedAssignment t c _) = Assignment t c
+adminUserField :: (RenderMessage master FormMessage) => Field sub master Text
+adminUserField = checkBool (== "admin") ("Wrong User" :: Text) textField
+
+adminForm :: Form (Text, Text)
+adminForm = renderDivs $ (,)
+   <$> areq adminUserField "User" Nothing
+   <*> areq validPasswordField "Password" Nothing
+
 
 --Util
+
+getAssignment :: ValidatedAssignment -> Day -> Assignment
+getAssignment (ValidatedAssignment t c) day = Assignment t day c
+
+getAssignmentWithFiles :: VassFiles -> Day -> (Assignment, [FileInfo])
+getAssignmentWithFiles (VassFiles t c f1 f2 f3) day = ((Assignment t day c), catMaybes [f1,f2,f3])
+
 
 extractFileInfo :: FileInfo -> (Text, Text, Source (ResourceT IO) BS.ByteString)
 extractFileInfo fileInfo = (fileName fileInfo, fileContentType fileInfo, fileSource fileInfo)
 
+getDay :: IO Data.Time.Calendar.Day
+getDay = fmap (localDay . zonedTimeToLocalTime) getZonedTime
+
+data Weekday = Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sunday 
+   deriving (Enum, Show, Bounded)
+
+data Month = January | February | March | April | May | June | July | August | September | October | November | December
+   deriving (Enum, Show)
+
+toString :: Day -> Text
+toString day = dayText `T.append` ", " `T.append` month `T.append` " " `T.append` (T.pack $ show dayInt) `T.append` ", " `T.append` (T.pack $ show year)
+   where (_,_,offset) = toWeekDate day
+         dayText = T.pack $ show (toEnum (offset - 1) :: Weekday)
+         month = T.pack $ show (toEnum (monthInt - 1) :: Month)
+         (year, monthInt, dayInt) = toGregorian day
+
+auth :: GHandler s m Bool
+auth = do
+   authed <- lookupSession "authed"
+   if (isJust authed && (fromJust authed) == "absolutelyAuthed")
+      then return True
+      else return False
+
+donthack :: Html
+donthack = toHtml ("don't hack me bro" :: Text)
 
 
 
+--Relics
+------------------------------------------------------------------------------------------
 
+{-
+   something <- runDB $ Esql.select $
+                        Esql.from $ \(a `Esql.LeftOuterJoin` mf) -> do
+                        Esql.on (Esql.just (a Esql.^. AssignmentId) Esql.==. mf Esql.?. FileAssignmentId)
+                        Esql.where_ (a Esql.^. AssignmentId Esql.==. Esql.val assignmentId)
+                        return (a,mf)
 
-
+   joinedDeliverables <- runDB $ runJoin (selectOneMany ((Just FileAssignmentId) <-.) (Just fileAssignmentId))
+      { somOrderOne  = [Asc AssignmentTitle]
+      , somFilterKeys = (FileAssignmentId <-.)
+      , somGetKey = assignmentId
+      , somIncludeNoMatch = True
+      }
+      -}
+ 
 
 --First conduit attempts
 

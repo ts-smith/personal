@@ -9,3 +9,15 @@
    color: black;
 #topBar li
    list-style: none;
+
+.fileButton div
+   display: inline-block;
+   background: #4682B4;
+   padding: 3px;
+
+.fileButton
+   text-decoration: none;
+.fileButton:hover
+   color: #FEFFEF;
+.fileButton
+   color: #FEFFEF;

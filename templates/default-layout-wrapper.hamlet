@@ -30,6 +30,10 @@ $newline never
                      <li>Home
                   <a href=@{AssignmentListR}>
                      <li>Assignment List
+                  <a href=@{FilesR}>
+                     <li>Attached Files
+                  <a href=@{AdminR}>
+                     <li>Admin
             <div id="main" role="main">
               ^{pageBody pc}
             <footer>

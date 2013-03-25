@@ -1,0 +1,5 @@
+<p>Sign In
+<form method=post enctype=#{enctype}>
+   ^{authWidget}
+   <input type=submit>
+
