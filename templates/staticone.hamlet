@@ -19,4 +19,6 @@
 
 <p> I also learned about jquery mobile, although it has serious drawbacks (speed), and about the event propogation model used by javascript.
 
+<a href="http://yuplanner.info">Organization website I made for Year Up
+
 <aside>*The dynamic content editor is more restrictive than I thought, I may want to make a more flexible one so I can eliminate the static section.
