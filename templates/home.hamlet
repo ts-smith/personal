@@ -1,1 +1,12 @@
-This is the home page
+<img id="profile" src="http://i.imgur.com/U2GR1Jh.jpg">
+<h3>Trevor Smith
+<p>At the beginning of 2012, I caught the programming bug. I have been practicing my skills constantly since then; nothing else 
+   is as satisfying as seeing a system conceived from nowhere become a reality. I started with Lisp, moved on to Java (thinking that was the
+   best thing ever in comparison), and now have found my way back to Haskell (again thinking it is the best thing ever, you may
+   see a pattern forming). I haven't really found a specific area that I want to specialize in (I have dabbled in quite a few areas),
+   for now I am just content making anything useful in this new form of expresion I have discovered.
+
+<p>Recently, I have been exploring web development using Yesod. I used to have an extreme distaste for web programming, but Yesod has 
+   made the experience surprisingly enjoyable. It makes it seem like regular programming with a web interface, which is trivially easy
+   to pass data to, and to construct the structure of. Although learning it hasn't been enjoyable (the documentation is difficult to
+   track down), it has become an extremely valuable tool in my repertoire.

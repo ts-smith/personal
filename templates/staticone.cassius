@@ -1,0 +1,9 @@
+aside 
+   font-size: 80%
+
+a, img, iframe
+   margin-top: 8px;
+   margin-bottom: 8px;
+
+code
+   color: black;

@@ -1,0 +1,22 @@
+<h3>Collaboration Assignment #2
+<img src="http://upload.wikimedia.org/wikipedia/commons/1/12/YearUpLogo.jpg">
+<a href="http://schoology.com">Schoology link
+<iframe width="560" height="315" src="http://www.youtube.com/embed/rJ7odjQ8YNk" frameborder="0" allowfullscreen="">
+<p>Doing some research today, I learned about the html data attribute. The data attribute allows one to embed arbitrary 
+   data in the structure of the document,that can be used for any purpose. The data can be any string value, and can
+   be accessed easily with javascript, or selected with css attribute selectors. To define the data attribute, write
+   something like <code>&lt;tag data-key="value"&gt;</code>.
+
+
+<p> I also learned more about css selectors, which I partially mentioned earlier. Attribute selectors can be used to say something like
+
+<pre>
+   <code>
+         \tag[data-key] {
+         \   style definition
+         \   ...
+         \}
+
+<p> I also learned about jquery mobile, although it has serious drawbacks (speed), and about the event propogation model used by javascript.
+
+<aside>*The dynamic content editor is more restrictive than I thought, I may want to make a more flexible one so I can eliminate the static section.

@@ -1,4 +1,5 @@
 <h1> Assignments
+<h3>Dynamic
 $if null assignments
    $# Show a standard message
    <p> There are no assignments posted
@@ -11,3 +12,7 @@ $else
             $if authed
                <a href=@{EditR assignmentId}>
                   <small>Edit
+<h3>Static
+<ul>
+   <li>
+      <a href=@{StaticOneR}>Assignment One

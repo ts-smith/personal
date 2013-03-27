@@ -35,7 +35,11 @@ $newline never
                   <a href=@{AdminR}>
                      <li>Admin
             <div id="main" role="main">
-              ^{pageBody pc}
+               <div id=contentSection>
+                  ^{pageBody pc}
+               <div id=sidebar>
+                  <h4>
+                     Something should go here
             <footer>
 
 

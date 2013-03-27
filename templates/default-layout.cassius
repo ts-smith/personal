@@ -1,9 +1,10 @@
 #topBar a
    display: inline-block;
-   background-color: #8FEE90;
+   background-color: #FF8B00;
    margin-right: 5px;
    padding: 2px 5px 2px 5px;
 #topBar a:hover
+   color: black;
    text-decoration: none;
 #topBar a:visited
    color: black;
@@ -21,3 +22,43 @@
    color: #FEFFEF;
 .fileButton
    color: #FEFFEF;
+
+#contentSection, #sidebar 
+   vertical-align: top;
+   display: inline-block;
+
+#contentSection 
+   width: 600px;
+
+#main
+   background-color: #E9E9E9;
+   -webkit-box-shadow: 1px 1px 21px rgba(0, 169, 111, 0.45);
+   -moz-box-shadow: 1px 1px 21px rgba(0, 169, 111, 0.45);
+   box-shadow: 1px 1px 21px rgba(0, 169, 111, 0.45);
+   padding: 3px;
+
+body, html, #main
+   min-height: 600px;
+   height: auto !important;
+   height: 600px;
+
+img
+   max-height: 100%;
+   max-width: 100%;
+
+#profile
+   width: 120px;
+
+body
+   background: rgb(195,217,255);
+   background: -moz-linear-gradient(top, rgba(195,217,255,1) 0%, rgba(177,200,239,1) 41%, rgba(152,176,217,1) 100%);
+   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(195,217,255,1)), color-stop(41%,rgba(177,200,239,1)), color-stop(100%,rgba(152,176,217,1)));
+   background: -webkit-linear-gradient(top, rgba(195,217,255,1) 0%,rgba(177,200,239,1) 41%,rgba(152,176,217,1) 100%);
+   background: -o-linear-gradient(top, rgba(195,217,255,1) 0%,rgba(177,200,239,1) 41%,rgba(152,176,217,1) 100%);
+   background: -ms-linear-gradient(top, rgba(195,217,255,1) 0%,rgba(177,200,239,1) 41%,rgba(152,176,217,1) 100%);
+   background: linear-gradient(to bottom, rgba(195,217,255,1) 0%,rgba(177,200,239,1) 41%,rgba(152,176,217,1) 100%);
+   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c3d9ff', endColorstr='#98b0d9',GradientType=0 );
+
+#sidebar
+   margin-left: 6px;
+   margin-top: 150px;
