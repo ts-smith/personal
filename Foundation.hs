@@ -23,6 +23,15 @@ import System.Log.FastLogger (Logger)
 
 import Data.Text
 
+--this is really bad
+
+import Data.Time
+import Data.Time.Calendar
+import Data.Time.Calendar.WeekDate
+
+--end bad
+
+
 -- | The site argument for your application. This can be a good place to
 -- keep settings and values requiring initialization before your application
 -- starts running, such as database connections. Every handler will have
@@ -89,6 +98,8 @@ instance Yesod App where
             $(widgetFile "normalize")
             addStylesheet $ StaticR css_bootstrap_css
             $(widgetFile "default-layout")
+        sidebar <- widgetToPageContent sideWidget
+        
         hamletToRepHtml $(hamletFile "templates/default-layout-wrapper.hamlet")
 
     -- This is done to provide an optimization for serving static files from
@@ -167,4 +178,42 @@ getExtra = fmap (appExtra . settings) getYesod
 -- wiki:
 --
 -- https://github.com/yesodweb/yesod/wiki/Sending-email
+
+--Widgets 
+
+sideWidget :: GWidget sub App ()
+sideWidget = do
+   sideAssignments <- lift $ runDB $ selectList [] [Desc AssignmentPosted, LimitTo 4]
+   let noAssignments = if Prelude.length sideAssignments == 0 then True else False
+   [whamlet|
+<h4>Recent Assignments
+$if noAssignments
+   $# Show a standard message
+   <p> There are no assignments posted
+$else
+   <ul>
+      $forall Entity assignmentId assignment <- sideAssignments
+         <li>
+            <small>#{localString $ assignmentPosted assignment}
+            <a href=@{AssignmentR assignmentId} > #{assignmentTitle assignment}
+|]
+
+--poorly placed utility functions, quite terrible actually
+
+getDDay :: IO Data.Time.Calendar.Day
+getDDay = fmap (localDay . zonedTimeToLocalTime) getZonedTime
+
+localString :: Day -> Text
+localString day = dayText `append` ", " `append` month `append` " " `append` (pack $ show dayInt) `append` ", " `append` (pack $ show year)
+   where (_,_,offset) = toWeekDate day
+         dayText = pack $ show (toEnum (offset - 1) :: Weekday)
+         month = pack $ show (toEnum (monthInt - 1) :: Month)
+         (year, monthInt, dayInt) = toGregorian day
+
+data Weekday = Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sunday 
+   deriving (Enum, Show, Bounded)
+
+data Month = January | February | March | April | May | June | July | August | September | October | November | December
+   deriving (Enum, Show)
+
 

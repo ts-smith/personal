@@ -38,8 +38,7 @@ $newline never
                <div id=contentSection>
                   ^{pageBody pc}
                <div id=sidebar>
-                  <h4>
-                     Something should go here
+                  ^{pageBody sidebar}
             <footer>
 
 

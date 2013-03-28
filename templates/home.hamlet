@@ -4,7 +4,7 @@
    is as satisfying as seeing a system conceived from nowhere become a reality. I started with Lisp, moved on to Java (thinking that was the
    best thing ever in comparison), and now have found my way back to Haskell (again thinking it is the best thing ever, you may
    see a pattern forming). I haven't really found a specific area that I want to specialize in (I have dabbled in quite a few areas),
-   for now I am just content making anything useful in this new form of expresion I have discovered.
+   for now I am just content making anything useful in this new form of expression I have discovered.
 
 <p>Recently, I have been exploring web development using Yesod. I used to have an extreme distaste for web programming, but Yesod has 
    made the experience surprisingly enjoyable. It makes it seem like regular programming with a web interface, which is trivially easy

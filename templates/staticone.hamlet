@@ -3,7 +3,7 @@
 <a href="http://schoology.com">Schoology link
 <iframe width="560" height="315" src="http://www.youtube.com/embed/rJ7odjQ8YNk" frameborder="0" allowfullscreen="">
 <p>Doing some research today, I learned about the html data attribute. The data attribute allows one to embed arbitrary 
-   data in the structure of the document,that can be used for any purpose. The data can be any string value, and can
+   data in the structure of the document, that can be used for any purpose. The data can be any string value, and can
    be accessed easily with javascript, or selected with css attribute selectors. To define the data attribute, write
    something like <code>&lt;tag data-key="value"&gt;</code>.
 
@@ -17,7 +17,7 @@
          \   ...
          \}
 
-<p> I also learned about jquery mobile, although it has serious drawbacks (speed), and about the event propogation model used by javascript.
+<p> I also learned about jquery mobile, although it has serious drawbacks (speed), and about the event propagation model used by javascript.
 
 <a href="http://yuplanner.info">Organization website I made for Year Up
 

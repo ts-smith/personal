@@ -62,3 +62,10 @@ body
 #sidebar
    margin-left: 6px;
    margin-top: 150px;
+
+#sidebar ul
+   list-style: none;
+#sidebar small
+   display: block;
+#sidebar li
+   margin-bottom: 8px;

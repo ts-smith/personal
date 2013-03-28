@@ -299,6 +299,10 @@ adminForm = renderDivs $ (,)
    <*> areq validPasswordField "Password" Nothing
 
 
+--Widgets, moved to Foundation.hs
+
+  
+
 --Util
 
 getAssignment :: ValidatedAssignment -> Day -> Assignment
@@ -313,12 +317,6 @@ extractFileInfo fileInfo = (fileName fileInfo, fileContentType fileInfo, fileSou
 
 getDay :: IO Data.Time.Calendar.Day
 getDay = fmap (localDay . zonedTimeToLocalTime) getZonedTime
-
-data Weekday = Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sunday 
-   deriving (Enum, Show, Bounded)
-
-data Month = January | February | March | April | May | June | July | August | September | October | November | December
-   deriving (Enum, Show)
 
 toString :: Day -> Text
 toString day = dayText `T.append` ", " `T.append` month `T.append` " " `T.append` (T.pack $ show dayInt) `T.append` ", " `T.append` (T.pack $ show year)
