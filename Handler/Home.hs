@@ -16,13 +16,11 @@ import qualified Data.Conduit.List as CL
 import Data.Maybe
 import Database.Persist.GenericSql
 
-import Utils.Utils
 import Data.Time.Calendar
 
 --for unsanitaryHtmlField
 import Utils.Fields
 
-instance YesodNic App
 
 getHomeR :: Handler RepHtml
 getHomeR = do
@@ -172,7 +170,7 @@ postNewFileR = do
 
 
 getFileR :: FileId -> Text -> Handler RepPlain
-getFileR fid filename = do
+getFileR fid _ = do
    --(File _ n t cid) <- runDB $ get404 fid
    let sql = "SELECT ??, ?? FROM file LEFT OUTER JOIN filecontent ON (file.content_id = filecontent.id) WHERE file.id = ? LIMIT 1"
        getFiles :: Handler [(Entity File, Entity Filecontent)]

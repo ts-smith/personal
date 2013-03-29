@@ -23,6 +23,7 @@ import System.Log.FastLogger (Logger)
 
 import Data.Text
 import Utils.Utils
+import Utils.Fields
 
 
 
@@ -156,6 +157,9 @@ instance YesodAuth App where
     authPlugins _ = [authBrowserId, authGoogleEmail]
 
     authHttpManager = httpManager
+
+
+instance YesodNic App
 
 -- This instance is required to use forms. You can modify renderMessage to
 -- achieve customized and internationalized form validation messages.
