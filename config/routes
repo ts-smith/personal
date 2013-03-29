@@ -17,4 +17,3 @@
 /file/#FileId/#Text FileR GET
 /files FilesR GET
 
-/staticone StaticOneR GET

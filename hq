@@ -1,0 +1,53 @@
+commit 53b5b837f3a7a8c7ca9663a9f4ed04c19cde0b34
+Author: Trevor <trevorssmith1392@gmail.com>
+Date:   Wed Mar 27 23:51:24 2013 -0700
+
+    default widget, horrible organization
+
+commit a63f1ad6950609e8f0337daf88cb17865984c4bd
+Author: Trevor <trevorssmith1392@gmail.com>
+Date:   Wed Mar 27 01:14:44 2013 -0700
+
+    binary
+
+commit 9819d8d997c8fb2470d2d1ce50bcab9e5650671e
+Author: Trevor <trevorssmith1392@gmail.com>
+Date:   Wed Mar 27 01:04:35 2013 -0700
+
+    Destroy vim files
+
+commit da8f1d5cefd67f51ba39464c506027777dbe8fd4
+Author: Trevor <trevorssmith1392@gmail.com>
+Date:   Wed Mar 27 01:03:59 2013 -0700
+
+    full fix
+
+commit e70d4f0ff7f1d418fbaa2c7c02fe94ed76fbbaea
+Author: Trevor <trevorssmith1392@gmail.com>
+Date:   Wed Mar 27 01:00:48 2013 -0700
+
+    fixed my stupid mistake
+
+commit 78cf4cca069122cf6f3f31bac32e039b621a94b4
+Author: Trevor <trevorssmith1392@gmail.com>
+Date:   Sun Mar 24 22:24:27 2013 -0700
+
+    Large Update
+
+commit 466c0fa0bcd45d1ae95518f448445430ab16d7d7
+Author: Trevor <trevorssmith1392@gmail.com>
+Date:   Fri Mar 22 07:48:48 2013 +0100
+
+    fix db config
+
+commit 01a518425d408cb8031c0f6a4542b1fb7d8dd409
+Author: Trevor <trevorssmith1392@gmail.com>
+Date:   Fri Mar 22 07:40:00 2013 +0100
+
+    heroku setup
+
+commit 2111a325463255cc007d4afac960a32869514895
+Author: Trevor <trevorssmith1392@gmail.com>
+Date:   Fri Mar 22 07:24:46 2013 +0100
+
+    init

@@ -22,14 +22,8 @@ import Text.Hamlet (hamletFile)
 import System.Log.FastLogger (Logger)
 
 import Data.Text
+import Utils.Utils
 
---this is really bad
-
-import Data.Time
-import Data.Time.Calendar
-import Data.Time.Calendar.WeekDate
-
---end bad
 
 
 -- | The site argument for your application. This can be a good place to
@@ -186,34 +180,15 @@ sideWidget = do
    sideAssignments <- lift $ runDB $ selectList [] [Desc AssignmentPosted, LimitTo 4]
    let noAssignments = if Prelude.length sideAssignments == 0 then True else False
    [whamlet|
-<h4>Recent Assignments
+<h4>Recent Posts
 $if noAssignments
    $# Show a standard message
-   <p> There are no assignments posted
+   <p> There is nothing posted
 $else
    <ul>
       $forall Entity assignmentId assignment <- sideAssignments
          <li>
-            <small>#{localString $ assignmentPosted assignment}
+            <small>#{toString $ assignmentPosted assignment}
             <a href=@{AssignmentR assignmentId} > #{assignmentTitle assignment}
 |]
-
---poorly placed utility functions, quite terrible actually
-
-getDDay :: IO Data.Time.Calendar.Day
-getDDay = fmap (localDay . zonedTimeToLocalTime) getZonedTime
-
-localString :: Day -> Text
-localString day = dayText `append` ", " `append` month `append` " " `append` (pack $ show dayInt) `append` ", " `append` (pack $ show year)
-   where (_,_,offset) = toWeekDate day
-         dayText = pack $ show (toEnum (offset - 1) :: Weekday)
-         month = pack $ show (toEnum (monthInt - 1) :: Month)
-         (year, monthInt, dayInt) = toGregorian day
-
-data Weekday = Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sunday 
-   deriving (Enum, Show, Bounded)
-
-data Month = January | February | March | April | May | June | July | August | September | October | November | December
-   deriving (Enum, Show)
-
 

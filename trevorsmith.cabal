@@ -20,7 +20,8 @@ library
                      Settings.StaticFiles
                      Settings.Development
                      Handler.Home
-                     Handler.SP
+                     Utils.Utils
+                     Utils.Fields
 
     if flag(dev) || flag(library-only)
         cpp-options:   -DDEVELOPMENT
@@ -73,6 +74,8 @@ library
                  , monad-logger                  >= 0.3
                  , fast-logger                   >= 0.3
                  , time                          >= 1.4
+                 , blaze-html                    >= 0.6.1.1
+                 , blaze-markup                  >= 0.5.1.5
 
 executable         trevorsmith
     if flag(library-only)
