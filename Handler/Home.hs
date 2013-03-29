@@ -20,10 +20,6 @@ import Utils.Utils
 import Data.Time.Calendar
 
 --for unsanitaryHtmlField
-import Text.Blaze (ToMarkup (toMarkup), preEscapedToMarkup)
-import Text.Blaze.Html.Renderer.String (renderHtml)
-import qualified Data.Text as T
-import Text.Hamlet (Html, shamlet)
 import Utils.Fields
 
 instance YesodNic App
@@ -306,17 +302,6 @@ adminForm :: Form (Text, Text)
 adminForm = renderDivs $ (,)
    <$> areq adminUserField "User" Nothing
    <*> areq validPasswordField "Password" Nothing
-
-unsanitaryHtmlField :: RenderMessage master FormMessage => Field sub master Html
-unsanitaryHtmlField = Field
-    { fieldParse = parseHelper $ Right . preEscapedToMarkup
-    , fieldView = \theId name attrs val _isReq -> toWidget [hamlet|
-$newline never
-<textarea id="#{theId}" name="#{name}" *{attrs}>#{showVal val}
-|]
-    , fieldEnctype = UrlEncoded
-    }
-  where showVal = either id (T.pack . renderHtml)
 
 --Widgets, moved to Foundation.hs
 
