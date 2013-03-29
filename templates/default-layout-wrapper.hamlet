@@ -29,7 +29,7 @@ $newline never
                   <a href=@{HomeR}>
                      <li>Home
                   <a href=@{AssignmentListR}>
-                     <li>Assignment List
+                     <li>Posts
                   <a href=@{FilesR}>
                      <li>Attached Files
                   <a href=@{AdminR}>

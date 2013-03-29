@@ -15,11 +15,17 @@ import Data.Conduit
 import qualified Data.Conduit.List as CL
 import Data.Maybe
 import Database.Persist.GenericSql
-import Data.Time
-import Data.Time.Calendar
-import Data.Time.Calendar.WeekDate
 
-import Yesod.Form.Nic (YesodNic, nicHtmlField)
+import Utils.Utils
+import Data.Time.Calendar
+
+--for unsanitaryHtmlField
+import Text.Blaze (ToMarkup (toMarkup), preEscapedToMarkup)
+import Text.Blaze.Html.Renderer.String (renderHtml)
+import qualified Data.Text as T
+import Text.Hamlet (Html, shamlet)
+import Utils.Fields
+
 instance YesodNic App
 
 getHomeR :: Handler RepHtml
@@ -245,7 +251,8 @@ data VassFiles = VassFiles { getMTitle :: Text
 mEntryForm :: Html -> MForm App App (FormResult VassFiles, Widget)
 mEntryForm extra = do
    (titleRes, titleView) <- mreq textField "Title" Nothing
-   (contentRes, contentView) <- mreq nicHtmlField "Content" Nothing
+   let contentField = unsanitaryNicHtmlField
+   (contentRes, contentView) <- mreq contentField "Content" Nothing
    (file1Res, fileAView) <- mopt fileField "Attach a file" Nothing
    (file2Res, fileBView) <- mopt fileField "Attach another file" Nothing
    (file3Res, fileCView) <- mopt fileField "Attach another file" Nothing
@@ -277,12 +284,14 @@ mEntryForm extra = do
 entryForm :: Form ValidatedAssignment
 entryForm = renderDivs $ ValidatedAssignment
    <$> areq textField "Title" Nothing
-   <*> areq nicHtmlField "Content" Nothing
+   <*> areq contentField "Content" Nothing
+   where contentField = unsanitaryNicHtmlField
 
 editForm :: Assignment -> Form ValidatedAssignment
 editForm (Assignment title _ content) = renderDivs $ ValidatedAssignment
    <$> areq textField "Title" (Just title)
-   <*> areq nicHtmlField "Content" (Just content)
+   <*> areq contentField "Content" (Just content)
+   where contentField = unsanitaryNicHtmlField
 
 fileUploadForm :: Form FileInfo
 fileUploadForm = renderDivs $ fileAFormReq "Choose a File"
@@ -298,6 +307,16 @@ adminForm = renderDivs $ (,)
    <$> areq adminUserField "User" Nothing
    <*> areq validPasswordField "Password" Nothing
 
+unsanitaryHtmlField :: RenderMessage master FormMessage => Field sub master Html
+unsanitaryHtmlField = Field
+    { fieldParse = parseHelper $ Right . preEscapedToMarkup
+    , fieldView = \theId name attrs val _isReq -> toWidget [hamlet|
+$newline never
+<textarea id="#{theId}" name="#{name}" *{attrs}>#{showVal val}
+|]
+    , fieldEnctype = UrlEncoded
+    }
+  where showVal = either id (T.pack . renderHtml)
 
 --Widgets, moved to Foundation.hs
 
@@ -315,16 +334,6 @@ getAssignmentWithFiles (VassFiles t c f1 f2 f3) day = ((Assignment t day c), cat
 extractFileInfo :: FileInfo -> (Text, Text, Source (ResourceT IO) BS.ByteString)
 extractFileInfo fileInfo = (fileName fileInfo, fileContentType fileInfo, fileSource fileInfo)
 
-getDay :: IO Data.Time.Calendar.Day
-getDay = fmap (localDay . zonedTimeToLocalTime) getZonedTime
-
-toString :: Day -> Text
-toString day = dayText `T.append` ", " `T.append` month `T.append` " " `T.append` (T.pack $ show dayInt) `T.append` ", " `T.append` (T.pack $ show year)
-   where (_,_,offset) = toWeekDate day
-         dayText = T.pack $ show (toEnum (offset - 1) :: Weekday)
-         month = T.pack $ show (toEnum (monthInt - 1) :: Month)
-         (year, monthInt, dayInt) = toGregorian day
-
 auth :: GHandler s m Bool
 auth = do
    authed <- lookupSession "authed"
@@ -334,7 +343,6 @@ auth = do
 
 donthack :: Html
 donthack = toHtml ("don't hack me bro" :: Text)
-
 
 
 --Relics

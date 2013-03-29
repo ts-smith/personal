@@ -3,7 +3,7 @@ $if showAttachments
    $forall (fid, n) <- fileHeaders
       <a class=fileButton href=@{FileR fid n}>
          <div>#{n}
-<h1>#{assignmentTitle assignment}
+<h1 class=postTitle>#{assignmentTitle assignment}
 $if authed
    <a href=@{EditR assignmentId}> Edit
 <article> #{assignmentContent assignment}

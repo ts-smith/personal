@@ -60,8 +60,11 @@ body
    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c3d9ff', endColorstr='#98b0d9',GradientType=0 );
 
 #sidebar
-   margin-left: 6px;
-   margin-top: 150px;
+   float:right;
+
+
+form div:nth-of-type(2) div:nth-of-type(2), .nicEdit-main, .nicEdit-pane
+   width: auto !important;
 
 #sidebar ul
    list-style: none;
@@ -69,3 +72,13 @@ body
    display: block;
 #sidebar li
    margin-bottom: 8px;
+
+
+article, #contentSection
+   text-align: justify;
+
+.postTitle
+   padding:8px;
+   color: #483D8B;
+
+  

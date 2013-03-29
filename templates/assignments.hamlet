@@ -1,18 +1,13 @@
-<h1> Assignments
-<h3>Dynamic
+<h1>Posts
 $if null assignments
    $# Show a standard message
-   <p> There are no assignments posted
+   <p> There is nothing posted
 $else
    <ul>
       $forall Entity assignmentId assignment <- assignments
          <li>
             <label>#{toString $ assignmentPosted assignment}
-            <a href=@{AssignmentR assignmentId} > #{assignmentTitle assignment}
+            <a class=postTitle href=@{AssignmentR assignmentId} > #{assignmentTitle assignment}
             $if authed
                <a href=@{EditR assignmentId}>
                   <small>Edit
-<h3>Static
-<ul>
-   <li>
-      <a href=@{StaticOneR}>Assignment One
