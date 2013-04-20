@@ -4,17 +4,18 @@ $newline never
 \<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
 \<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
 \<!--[if gt IE 8]><!-->
-<html class="no-js" lang="en"> <!--<![endif]-->
+<html class="no-js" lang="en" ng-app> <!--<![endif]-->
     <head>
-        <meta charset="UTF-8">
+        <meta charset="utf-8">
 
         <title>#{pageTitle pc}
-        <meta name="description" content="">
-        <meta name="author" content="">
 
         <meta name="viewport" content="width=device-width,initial-scale=1">
+        <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
 
         ^{pageHead pc}
+        $# <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.1/angular.min.js">
 
         \<!--[if lt IE 9]>
         \<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -23,25 +24,33 @@ $newline never
         <script>
           document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/,'js');
     <body>
-        <div class="container">
-            <header>
-               <ul id=topBar>
-                  <a href=@{HomeR}>
-                     <li>Home
-                  <a href=@{AssignmentListR}>
-                     <li>Posts
-                  <a href=@{FilesR}>
-                     <li>Attached Files
-                  <a href=@{AdminR}>
-                     <li>Admin
-            <div id="main" role="main">
-               <div id=contentSection>
+        <div class="navbar navbar-static-top">
+            <div class="navbar-inner">
+              <div class="container">
+                <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                  <span class="icon-bar">
+                  <span class="icon-bar">
+                  <span class="icon-bar">
+                <span class="brand">Trevor Smith
+                <div class="nav-collapse collapse">
+                  <ul class="nav">
+                    <li>
+                        <a href=@{HomeR} >Home
+                    <li>
+                        <a href=@{AssignmentListR} >Posts
+                    <li>
+                        <a href=@{FilesR} >Files
+
+        <div id="main" class="container">
+           <div class=row role="main">
+               <div id=contentSection class=span9>
                   ^{pageBody pc}
-               <div id=sidebar>
+               <div id=sidebar class=span2>
                   ^{pageBody sidebar}
-            <footer>
+           <footer>
 
-
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js">
         $maybe analytics <- extraAnalytics $ appExtra $ settings master
             <script>
               if(!window.location.href.match(/localhost/)){

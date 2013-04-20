@@ -6,7 +6,7 @@
 
 / HomeR GET
 /list AssignmentListR GET 
-/assignment/#AssignmentId AssignmentR GET
+/post/#AssignmentId AssignmentR GET
 
 /admin AdminR GET POST
 /admin/post PostR GET POST

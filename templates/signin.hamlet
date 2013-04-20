@@ -1,5 +1,5 @@
 <p>Sign In
-<form method=post enctype=#{enctype}>
+<form method=post enctype=#{enctype} action=@{AdminR}>
    ^{authWidget}
    <input type=submit>
 

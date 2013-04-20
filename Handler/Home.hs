@@ -31,7 +31,7 @@ getHomeR = do
 getAssignmentListR :: Handler RepHtml
 getAssignmentListR = do
    authed <- auth
-   assignments <- runDB $ selectList [] [Desc AssignmentPosted]
+   assignments <- runDB $ selectList [] [Desc AssignmentPosted, Desc AssignmentId]
    defaultLayout $ do
       $(widgetFile "assignments")
 

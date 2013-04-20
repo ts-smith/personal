@@ -1,12 +1,28 @@
-<img id="profile" src="http://i.imgur.com/U2GR1Jh.jpg">
-<h3>Trevor Smith
+<div class="hero-unit">
+   <div class=row>
+      <div class=span4>
+         <img id="profile" src="http://i.imgur.com/U2GR1Jh.jpg">
+      <div class=span3>
+         <h1>General Purpose Nerd
 <p>At the beginning of 2012, I caught the programming bug. I have been practicing my skills constantly since then; nothing else 
    is as satisfying as seeing a system conceived from nowhere become a reality. I started with Lisp, moved on to Java (thinking that was the
    best thing ever in comparison), and now have found my way back to Haskell (again thinking it is the best thing ever, you may
    see a pattern forming). I haven't really found a specific area that I want to specialize in (I have dabbled in quite a few areas),
    for now I am just content making anything useful in this new form of expression I have discovered.
 
-<p>Recently, I have been exploring web development using Yesod. I used to have an extreme distaste for web programming, but Yesod has 
-   made the experience surprisingly enjoyable. It makes it seem like regular programming with a web interface, which is trivially easy
-   to pass data to, and to construct the structure of. Although learning it hasn't been enjoyable (the documentation is difficult to
-   track down), it has become an extremely valuable tool in my repertoire.
+<p>Recently, I have begun to appreciate all aspects of Web Programming, even though I used to have an extreme distaste for it. I had seen MVC with Java,
+   but the ammount of code and libraries required to do the simplest thing turned me off to it. Yesod, leveraging Haskell's expressiveness, remedied
+   that for me, making it fun once again. Using Yesod and it's simple templating langauges (a much better tool than JSPs in my opinion), I began to 
+   see web engineering as programming with a web interface. Yesod automatically passes the entire controller scope to the templates, so HTML began to 
+   look like a simple interface designing language for the program. 
+
+<p>Now I have began to appreciate all the frameworks that are available for front ends. Starting with Bootstrap, my web pages went from looking extremely 
+   amature to somewhat respectable looking (although generic). I don't have a passion for visual design, so with Bootstrap I can quickly and easily get something
+   reasonable going.
+
+<p>Most recently, I've discovered Angular.js. It used to seem like a joke to me how fast trends on the web changed, and that things like Angular and Ember were 
+   just fads that I didn't need to learn, but know I know how wrong I was. Yesod was serving me well, but I wanted to step up the quality of my applications, 
+   and single page websites really do take it up to another level. Not only does Angular.js makes web engineering easier and more efficient, it also made me 
+   realize that javascript should be treated like a serious language. Instread of hobbled together javascript and jquery functions, complex object hierarchies
+   can be utilizied to full effect to make the code clean and safe. 
+

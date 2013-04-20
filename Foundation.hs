@@ -90,8 +90,8 @@ instance Yesod App where
         -- you to use normal widget features in default-layout.
 
         pc <- widgetToPageContent $ do
-            $(widgetFile "normalize")
-            addStylesheet $ StaticR css_bootstrap_css
+            -- $(widgetFile "normalize")
+            --addStylesheet $ StaticR css_bootstrap_css
             $(widgetFile "default-layout")
         sidebar <- widgetToPageContent sideWidget
         
@@ -181,7 +181,7 @@ getExtra = fmap (appExtra . settings) getYesod
 
 sideWidget :: GWidget sub App ()
 sideWidget = do
-   sideAssignments <- lift $ runDB $ selectList [] [Desc AssignmentPosted, LimitTo 4]
+   sideAssignments <- lift $ runDB $ selectList [] [Desc AssignmentPosted, Desc AssignmentId, LimitTo 4]
    let noAssignments = if Prelude.length sideAssignments == 0 then True else False
    [whamlet|
 <h4>Recent Posts
