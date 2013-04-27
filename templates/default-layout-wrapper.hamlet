@@ -23,8 +23,9 @@ $newline never
 
         <style>
           .gravatar {
-             width: 18px;
+             width: 17px;
              margin-right: 4px;
+             padding-bottom: 4px;
           }
 
         <script>
