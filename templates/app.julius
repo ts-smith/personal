@@ -1,0 +1,23 @@
+angular.module('personal', []);
+
+/*
+   directive('navbar', function () {
+      return {
+         restrict: 'E',
+         transclude: true,
+         templateUrl: "/static/html/navbar.html"
+         replace: true
+      };
+   }).
+   directive('navlink', function () {
+      return {
+         restrict: 'E',
+         transclude: true,
+         link: function(scope, element, attrs) {
+            scope.href = attrs.navlocation;
+         }
+         templateUrl: "/static/html/navlink.html",
+         replace: true
+      };
+   })
+        */ 
