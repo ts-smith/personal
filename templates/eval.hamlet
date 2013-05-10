@@ -1,0 +1,17 @@
+   <div class="tabbable"> <!-- Only required for left/right tabs -->
+     <ul class="nav nav-tabs">
+       <li class="active"><a href="#tab1" data-toggle="tab">Feed Back</a>
+       <li><a href="#tab2" data-toggle="tab">Evaluations</a>
+       <li><a href="#tab3" data-toggle="tab">Grades</a>
+     <div class="tab-content">
+       <div class="tab-pane active" id="tab1">
+            <p>I have not recieved much feedback at Year Up through the standard channels. Some of my colleagues have praised my tech skills, and have suggested that I take more of leadership role.
+
+
+
+       <div class="tab-pane" id="tab2">
+         
+
+       <div class="tab-pane" id="tab3">
+         <div class="row row-bottom">
+

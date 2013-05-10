@@ -17,3 +17,4 @@
 /file/#FileId/#Text FileR GET
 /files FilesR GET
 
+/eval EvalR GET

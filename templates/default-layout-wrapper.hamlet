@@ -47,6 +47,8 @@ $newline never
                        <a href=@{AssignmentListR}>Posts
                     <li>
                        <a href=@{FilesR}>Attached Files
+                    <li>
+                       <a href=@{EvalR}>Evaluations
 
         <div id="main" class="container">
            <div class=row role="main">
