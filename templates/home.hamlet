@@ -4,8 +4,7 @@
          <img id="profile" src="http://i.imgur.com/U2GR1Jh.jpg">
       <div class=span3>
          <h1>Reality Engineer
-<p>At the beginning of 2012, I caught the programming bug. I have been practicing my skills constantly since then; nothing else 
-   is as satisfying as seeing a system conceived from nowhere become a reality. I started with Lisp, moved on to Java (thinking that was the
-   best thing ever in comparison), and now have found my way back to Haskell (again thinking it is the best thing ever, you may
-   see a pattern forming). I haven't really found a specific area that I want to specialize in (I have dabbled in quite a few areas, and I have a tendency to want to learn everything. If only.),
-   for now I am just content making anything useful in this new form of expression I have discovered.
+<p>I caught the programming bug at the beginning of 2012, and have been programming at every opportunity I could get since then. I love the ability to go from thought to reality with relatively little friction, and seeing the final product working as it should. I was studying Psychology before getting into it, and I bring that to software through my experience dealing with large, complicated, abstract systems that have many interacting components. I am great at seeing the big picture, and have the thoroughness to see to all the details to make it happen.
+<p>In terms of engineering trajectory, I went from Lisp, to Java, to Haskell (after some other dabbling), and now heavily on to JavaScript, every time thinking those were the best things ever.
+<p>At first, I couldn't stand web programming; all the tools seemed awkward and ill-conceived. In comparison to the static typing of Java, Javascript seemed like a horrible kludge. But as I grew, the big picture began to click. I now see the web and its related languages a simple interface designing language for web-facing programs. With things like Angular.js, even Javascript programming now seems like a serious endeavour. And with HTML5, and increasingly things like ASM.js and ORBX.js, I see the whole web platform as an excellent low-friction delivery system for an extremely wide range of applications.
+<p>Now that I have found my true passion in life, I plan on pursuing a computer science degree in the near future, circumstances allowing.
