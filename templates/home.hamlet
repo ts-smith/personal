@@ -1,7 +1,7 @@
 <div class="hero-unit">
    <div class=row>
       <div class=span3>
-         <img id="profile" src="http://i.imgur.com/U2GR1Jh.jpg">
+         <img id="profile" src="@{StaticR img_profile_jpg}">
       <div class=span3>
          <h1>Reality Engineer
 <p>I caught the programming bug at the beginning of 2012, and have been programming at every opportunity I could get since then. I love the ability to go from thought to reality with relatively little friction, and seeing the final product working as it should. I was studying Psychology before getting into it, and I bring that to software through my experience dealing with large, complicated, abstract systems that have many interacting components. I am great at seeing the big picture, and have the thoroughness to see to all the details to make it happen.
